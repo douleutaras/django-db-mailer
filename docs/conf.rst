@@ -27,6 +27,7 @@ App settings
     DB_MAILER_PUSH_QUEUE = 'default'
     DB_MAILER_SMS_QUEUE = 'default'
     DB_MAILER_TTS_QUEUE = 'default'
+    DB_MAILER_SUBSCRIPTION_QUEUE = 'default'
 
     # By default celery is enabled. If djcelery is not on INSTALLED_APPS,
     # this option is useless. When djcelery on INSTALLED_APPS, and you want
@@ -181,6 +182,12 @@ App settings
     # By default:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+    # Subscription data field
+    DB_MAILER_MODEL_SUBSCRIPTION_DATA_FIELD = 'dbmail.fields.DataTextField'
+
+    # Default apns action
+    DB_MAILER_APNS_PROVIDER_DEFAULT_ACTION = 'Show'
+
 
 Providers settings
 ==================
@@ -262,7 +269,7 @@ Parse
 
 
 PushOver
-----------
+--------
 
 .. code-block:: python
 
@@ -340,3 +347,15 @@ PushAll
             'priority': '1',
         }
     }
+
+
+SmsBliss
+--------
+
+.. code-block:: python
+
+    # smsbliss.ru/
+    SMSBLISS_API_URL = 'http://api.smsbliss.net/messages/v2/send.json'
+    SMSBLISS_LOGIN = ''
+    SMSBLISS_PASSWORD = ''
+    SMSBLISS_FROM = 'DbMail'

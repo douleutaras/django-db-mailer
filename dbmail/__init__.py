@@ -4,7 +4,7 @@ from datetime import datetime
 import sys
 
 
-VERSION = (2, 3, 10)
+VERSION = (2, 3, 12)
 
 default_app_config = 'dbmail.apps.DBMailConfig'
 
@@ -104,14 +104,15 @@ def send_db_push(*args, **kwargs):
 
 def send_db_subscription(*args, **kwargs):
     from dbmail.defaults import (
-        CELERY_QUEUE, SEND_MAX_TIME, ENABLE_CELERY, MAIL_SUBSCRIPTION_MODEL)
+        SUBSCRIPTION_QUEUE, SEND_MAX_TIME,
+        ENABLE_CELERY, MAIL_SUBSCRIPTION_MODEL)
 
     MailSubscription = import_by_string(MAIL_SUBSCRIPTION_MODEL)
 
     use_celery = ENABLE_CELERY and kwargs.pop('use_celery', ENABLE_CELERY)
     options = {
         'time_limit': kwargs.pop('time_limit', SEND_MAX_TIME),
-        'queue': kwargs.pop('queue', CELERY_QUEUE),
+        'queue': kwargs.pop('queue', SUBSCRIPTION_QUEUE),
         'args': args, 'kwargs': kwargs,
     }
 

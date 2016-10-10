@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 
+import os
+
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
@@ -15,11 +17,13 @@ PRIORITY_STEPS = get_settings('DB_MAILER_PRIORITY_STEPS', (
     (9, _("Deferred")),
 ))
 CELERY_QUEUE = get_settings('DB_MAILER_CELERY_QUEUE', 'default')
-PUSH_QUEUE = get_settings('DB_MAILER_PUSH_QUEUE', 'default')
-SMS_QUEUE = get_settings('DB_MAILER_SMS_QUEUE', 'default')
-TTS_QUEUE = get_settings('DB_MAILER_TTS_QUEUE', 'default')
-SIGNALS_QUEUE = get_settings('DB_MAILER_SIGNALS_QUEUE', 'default')
-SIGNALS_MAIL_QUEUE = get_settings('DB_MAILER_SIGNALS_MAIL_QUEUE', 'default')
+PUSH_QUEUE = get_settings('DB_MAILER_PUSH_QUEUE', CELERY_QUEUE)
+SMS_QUEUE = get_settings('DB_MAILER_SMS_QUEUE', CELERY_QUEUE)
+TTS_QUEUE = get_settings('DB_MAILER_TTS_QUEUE', CELERY_QUEUE)
+SIGNALS_QUEUE = get_settings('DB_MAILER_SIGNALS_QUEUE', CELERY_QUEUE)
+SIGNALS_MAIL_QUEUE = get_settings('DB_MAILER_SIGNALS_MAIL_QUEUE', CELERY_QUEUE)
+SUBSCRIPTION_QUEUE = get_settings('DB_MAILER_SUBSCRIPTION_QUEUE', CELERY_QUEUE)
+TRACKING_QUEUE = get_settings('DB_MAILER_TRACKING_QUEUE', CELERY_QUEUE)
 ENABLE_CELERY = get_settings('DB_MAILER_ENABLE_CELERY', True)
 SHOW_CONTEXT = get_settings('DB_MAILER_SHOW_CONTEXT', False)
 READ_ONLY_ENABLED = get_settings('DB_MAILER_READ_ONLY_ENABLED', True)
@@ -102,6 +106,10 @@ TTS_PROVIDER = get_settings(
     'DB_MAILER_TTS_PROVIDER', 'dbmail.providers.nexmo.tts')
 PUSH_PROVIDER = get_settings(
     'DB_MAILER_PUSH_PROVIDER', 'dbmail.providers.prowl.push')
+MAIL_PROVIDER = get_settings('DB_MAILER_MAIL_PROVIDER', None)
+
+SAFARI_PUSH_PATH = get_settings(
+    'DB_MAILER_SAFARI_PUSH_PATH', settings.STATIC_ROOT or '.')
 
 MESSAGE_HTML2TEXT = get_settings(
     'DB_MAILER_MESSAGE_HTML2TEXT', 'dbmail.utils')
@@ -114,5 +122,9 @@ IGNORE_BROWSE_APP = get_settings(
 
 MODEL_HTMLFIELD = get_settings(
     'DB_MAILER_MODEL_HTMLFIELD', 'dbmail.fields.HTMLField')
+MODEL_SUBSCRIPTION_DATA_FIELD = get_settings(
+    'DB_MAILER_MODEL_SUBSCRIPTION_DATA_FIELD', 'dbmail.fields.DataTextField')
+APNS_PROVIDER_DEFAULT_ACTION = get_settings(
+    'DB_MAILER_APNS_PROVIDER_DEFAULT_ACTION', 'Show')
 
 DEBUG = settings.DEBUG and get_settings('DB_MAILER_DEBUG', False)

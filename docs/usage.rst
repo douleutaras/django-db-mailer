@@ -1,12 +1,14 @@
+.. _usage:
+
 Usage
 =====
 
 To use ``django-db-mailer`` on the your project - Add and Configure mail templates on the admin page.
 
 
-High level API
---------------
-Send mail API with comments for all available options:
+Mail API
+--------
+SendMail API with all available options:
 
 .. code-block:: python
 
@@ -71,7 +73,13 @@ Send mail API with comments for all available options:
         # and email can not be delivered by celery.
         # Or some part of your app run on instance, where celery is not used.
         use_celery=True,
+
+        # ...
+        # another named arguments, which supported by specified backend
+        # ...
     )
+
+*``slug`` and ``recipient`` is not a named arguments.*
 
 *For track information about read - add dbmail into urls.*
 
@@ -264,7 +272,7 @@ or sms:
 
 DB template
 -----------
-Simple example to create template from the shell:
+Simple example to create template from shell:
 
 .. code-block:: python
 
@@ -273,10 +281,10 @@ Simple example to create template from the shell:
     # Create new dbmail template.
     MailTemplate.objects.create(
         name="Site welcome template",
-        subject="Welcome",
-        message="Welcome to our site. We are glad to see you.",
+        subject="[{{prefix}}] Welcome {{full_name}}",
+        message="Hi, {{username}}. Welcome to our site.",
         slug="welcome",
-        is_html=False,
+        is_html=True,
     )
 
 

@@ -16,9 +16,6 @@ Django-Db-Mailer
 .. image:: https://img.shields.io/pypi/v/django-db-mailer.svg
     :alt: Current version on PyPi
     :target: https://pypi.python.org/pypi/django-db-mailer/
-.. image:: https://img.shields.io/pypi/dm/django-db-mailer.svg
-    :alt: Downloads from PyPi
-    :target: https://pypi.python.org/pypi/django-db-mailer/
 .. image:: https://readthedocs.org/projects/django-db-mailer/badge/?version=latest
     :target: http://django-db-mailer.readthedocs.org/
     :alt: Documentation Status
@@ -280,6 +277,15 @@ used without any dependencies with built-in backends.
 * BoxCar
 * Parse
 
+**Browser notifications:**
+
+* GCM (Desktop: Google Chrome, FireFox; Mobile: Google Chrome on Android)
+* APNs (Desktop: Safari)
+* Centrifugo
+* PubNub
+* BoxCar
+* PushAll
+
 **Notifications for team:**
 
 * Slack/Mattermost
@@ -288,23 +294,18 @@ used without any dependencies with built-in backends.
 * Pushover
 * PushAll
 
-**Browser notifications:**
-
-* Centrifugo
-* PubNub
-* BoxCar
-* PushAll
-
 **SMS notifications:**
 
 * Nexmo
 * Twilio
 * IQsms
 * SmsAero
+* SmsBliss
 
 **Mail notifications:**
 
 * SendinBlue
+* Any, which designed as django email backend
 
 *You can find providers settings on docs.*
 

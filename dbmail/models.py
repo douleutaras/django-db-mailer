@@ -18,7 +18,9 @@ from django import VERSION
 from dbmail.defaults import (
     PRIORITY_STEPS, UPLOAD_TO, DEFAULT_CATEGORY, AUTH_USER_MODEL,
     DEFAULT_FROM_EMAIL, DEFAULT_PRIORITY, CACHE_TTL,
-    BACKEND, _BACKEND, BACKENDS_MODEL_CHOICES, MODEL_HTMLFIELD)
+    BACKEND, _BACKEND, BACKENDS_MODEL_CHOICES, MODEL_HTMLFIELD,
+    MODEL_SUBSCRIPTION_DATA_FIELD
+)
 
 from dbmail import initial_signals, import_by_string
 from dbmail import python_2_unicode_compatible
@@ -26,6 +28,7 @@ from dbmail.utils import premailer_transform
 
 
 HTMLField = import_by_string(MODEL_HTMLFIELD)
+SubscriptionDataField = import_by_string(MODEL_SUBSCRIPTION_DATA_FIELD)
 
 
 def _upload_mail_file(instance, filename):
@@ -709,6 +712,8 @@ class MailLogTrack(models.Model):
 
 
 class MailSubscriptionAbstract(models.Model):
+    title = models.CharField(null=True, max_length=350, blank=True)
+
     user = models.ForeignKey(
         AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True)
     backend = models.CharField(
@@ -724,8 +729,9 @@ class MailSubscriptionAbstract(models.Model):
     defer_at_allowed_hours = models.BooleanField(
         _('Defer at allowed hours'), default=False)
     address = models.CharField(
-        _('Address'), max_length=60, db_index=True,
+        _('Address'), max_length=350, db_index=True,
         help_text=_('Must be phone number/email/token'))
+    data = SubscriptionDataField(null=True, blank=True)
 
     def send_confirmation_link(
             self, slug='subs-confirmation', *args, **kwargs):
@@ -781,7 +787,11 @@ class MailSubscriptionAbstract(models.Model):
 
         sub_filter = sub_filter if isinstance(sub_filter, dict) else {}
 
-        for method in cls.get_notification_list(user_id, **sub_filter):
+        for method_id in cls.get_notification_list(
+                user_id, **sub_filter).values_list('pk', flat=True):
+
+            method = cls.objects.get(pk=method_id)
+
             kwargs['send_at_date'] = None
             start_hour = cls.convert_to_date(method.start_hour)
             end_hour = cls.convert_to_date(method.end_hour)
